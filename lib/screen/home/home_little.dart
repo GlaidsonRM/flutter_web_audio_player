@@ -1,8 +1,10 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_web_audio_player/controller/audio_actions.dart';
 import 'package:flutter_web_audio_player/controller/music_controller.dart';
 import 'package:flutter_web_audio_player/controller/music_player_controller.dart';
 import 'package:flutter_web_audio_player/model/music_model.dart';
+import 'package:flutter_web_audio_player/screen/home/list_music_widget.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 
@@ -12,47 +14,18 @@ class HomeLittle extends StatelessWidget {
   final MusicPlayerController playerController;
   HomeLittle(this.playerController);
 
+  final AudioActions actions = AudioActions();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
         children: [
           Container(height: 350, child: playerAudio()),
-          Expanded(child: listMusic())
+          Expanded(child: ListMusicWidget())
         ],
       ),
     );
-  }
-
-  listMusic() {
-    return Obx(() => ListView.builder(
-          itemCount: musicController.allMusic.length,
-          itemBuilder: (context, index) {
-            MusicModel musicModel = musicController.allMusic[index];
-            return Column(
-              children: [
-                ListTile(
-                  onTap: () {
-                    playerController.isPaused.value = false;
-                    playerController.playing.value = false;
-                    playerController.positionMusicPlayer.value = index;
-                    //playerController.playPauseMusic();
-                  },
-                  leading: Container(
-                      height: 50,
-                      width: 50,
-                      child: Image.network(musicModel.urlImage)),
-                  title: Text(musicModel.description),
-                  subtitle: Text(musicModel.artist),
-                  trailing: Text('03:12'),
-                ),
-                Divider(
-                  thickness: 1,
-                )
-              ],
-            );
-          },
-        ));
   }
 
   playerAudio() {
@@ -112,17 +85,7 @@ class HomeLittle extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       InkWell(
-                        onTap: () {
-                          playerController.isPaused.value = false;
-                          playerController.playing.value = false;
-                          if (playerController.positionMusicPlayer.value == 0) {
-                            playerController.positionMusicPlayer.value =
-                                musicController.allMusic.length - 1;
-                          } else {
-                            playerController.positionMusicPlayer.value--;
-                          }
-                          //playerController.playPauseMusic();
-                        },
+                        onTap: actions.previousMusic,
                         child: Icon(
                           Icons.skip_previous,
                           color: Colors.white,
@@ -133,9 +96,9 @@ class HomeLittle extends StatelessWidget {
                         width: 8,
                       ),
                       InkWell(
-                        onTap: playerController.newPlayer,
+                        onTap: actions.playOrPause,
                         child: Icon(
-                          playerController.playing.value
+                          playerController.player.playing
                               ? Icons.pause
                               : Icons.play_arrow,
                           color: Colors.white,
@@ -146,17 +109,7 @@ class HomeLittle extends StatelessWidget {
                         width: 8,
                       ),
                       InkWell(
-                        onTap: () {
-                          playerController.isPaused.value = false;
-                          playerController.playing.value = false;
-                          if (playerController.positionMusicPlayer.value ==
-                              musicController.allMusic.length - 1) {
-                            playerController.positionMusicPlayer.value = 0;
-                          } else {
-                            playerController.positionMusicPlayer.value++;
-                          }
-                          //playerController.playPauseMusic();
-                        },
+                        onTap: actions.nextMusic,
                         child: Icon(
                           Icons.skip_next,
                           color: Colors.white,
@@ -167,19 +120,22 @@ class HomeLittle extends StatelessWidget {
                   ),
                   Container(
                     width: 250,
-                    child: SliderTheme(data: SliderThemeData(
-                      trackHeight: 0.1,
-                      showValueIndicator: ShowValueIndicator.never,
-                      valueIndicatorColor: Colors.grey,
-                      valueIndicatorShape: SliderComponentShape.noOverlay,
-                      thumbColor: Colors.green,
-                    ), child: Slider(onChanged: (double value) {
-                      playerController.player.setVolume(value);
-
-                      playerController.player.icyMetadataStream.listen((event) {
-                        print(event!.info!.title);
-                      });
-                    }, value: playerController.player.volume,)),
+                    child: Row(
+                      children: [
+                        Icon(Icons.volume_up_sharp, color: Colors.green,),
+                        Expanded(
+                          child: SliderTheme(data: SliderThemeData(
+                            trackHeight: 0.1,
+                            showValueIndicator: ShowValueIndicator.never,
+                            valueIndicatorColor: Colors.grey,
+                            valueIndicatorShape: SliderComponentShape.noOverlay,
+                            thumbColor: Colors.green,
+                          ), child: Slider(onChanged: (double value) {
+                            playerController.player.setVolume(value);
+                          }, value: playerController.player.volume,)),
+                        ),
+                      ],
+                    ),
                   ),
                   SizedBox(
                     height: 8,

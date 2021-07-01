@@ -38,6 +38,7 @@ class MusicPlayerController extends GetxController {
         musicController.allMusic.forEach((element) {
           audiosSource.add(AudioSource.uri(Uri.parse(element.url)));
         });
+        setAudioSource(audiosSource);
       }
     });
 
@@ -90,6 +91,8 @@ class MusicPlayerController extends GetxController {
         }
       }
     });
+
+
   }
 
   _playPauseMusic() async {
@@ -131,7 +134,7 @@ class MusicPlayerController extends GetxController {
     return '$minuto:$segundos';
   }
 
-  newPlayer() async {
+  setAudioSource(List<AudioSource> source) async {
     await player.setAudioSource(
       ConcatenatingAudioSource(
         // Start loading next item just before reaching it.
@@ -139,7 +142,7 @@ class MusicPlayerController extends GetxController {
         // Customise the shuffle algorithm.
         shuffleOrder: DefaultShuffleOrder(), // default
         // Specify the items in the playlist.
-        children: audiosSource,
+        children: source,
       ),
       // Playback will be prepared to start from track1.mp3
       initialIndex: 0, // default
@@ -149,11 +152,5 @@ class MusicPlayerController extends GetxController {
     ).onError((error, stackTrace) {
       print(error.toString());
     });
-    print('Pronto');
-    await player.play();
-    //await player.seekToNext();
-//     await player.seekToPrevious();
-// // Jump to the beginning of track3.mp3.
-//     await player.seek(Duration(milliseconds: 0), index: 2);
   }
 }

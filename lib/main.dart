@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_audio_player/controller/audio_controller.dart';
 import 'package:flutter_web_audio_player/controller/music_controller.dart';
+import 'package:flutter_web_audio_player/controller/music_player_controller.dart';
 import 'package:flutter_web_audio_player/model/file_audio.dart';
 import 'package:flutter_web_audio_player/screen/home/home_screen.dart';
 import 'package:get/get.dart';
@@ -19,6 +20,10 @@ void main() async {
   Get.lazyPut(() => MusicController());
   MusicController musicController = Get.find();
   musicController.onInit();
+
+  Get.lazyPut(() => MusicPlayerController());
+  MusicPlayerController musicPlayerController = Get.find();
+  musicPlayerController.onInit();
 
   ///flutter_beta run --web-renderer html
 

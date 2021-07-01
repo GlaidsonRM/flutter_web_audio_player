@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "807585634012",
+    "project_id": "gm-music",
+    "storage_bucket": "gm-music.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:807585634012:android:2449a16cdcc769f1718619",
+        "android_client_info": {
+          "package_name": "com.example.flutter_web_audio_player"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "807585634012-9h5nbjcsvv9612rh57kpdos224lbbudt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyASo-s4iR8Yza59fUYEVJRzCeboWLBVdhM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "807585634012-9h5nbjcsvv9612rh57kpdos224lbbudt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:807585634012:android:396dabe63f95e486718619",
+        "android_client_info": {
+          "package_name": "com.glaidson.gm_music_player"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "807585634012-9h5nbjcsvv9612rh57kpdos224lbbudt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyASo-s4iR8Yza59fUYEVJRzCeboWLBVdhM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "807585634012-9h5nbjcsvv9612rh57kpdos224lbbudt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

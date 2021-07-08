@@ -4,9 +4,11 @@ import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 
 class MusicPlayerController extends GetxController {
-  final player = AudioPlayer();
+  AudioPlayer player = AudioPlayer();
   final MusicController musicController = Get.find();
+  PlaybackEvent playbackEvent = PlaybackEvent();
 
+  RxDouble volume = 0.5.obs;
   RxDouble positionMusic = 0.0.obs;
   RxDouble maxPositionMusic = 100.0.obs;
   RxInt positionMusicPlayer = 0.obs;
@@ -17,6 +19,8 @@ class MusicPlayerController extends GetxController {
   RxBool isPaused = false.obs;
 
   List<AudioSource> audiosSource = [];
+
+  ConcatenatingAudioSource playList = ConcatenatingAudioSource(children: []);
 
   var currentMusic = MusicModel(
           artist: 'Nada tocando',
@@ -31,25 +35,47 @@ class MusicPlayerController extends GetxController {
   void onInit() {
     super.onInit();
 
+    volume.listen((v) {
+      player.setVolume(v);
+    });
+
+    player.icyMetadataStream.listen((event) {
+      print(event);
+    });
+
     audiosSource.clear();
 
     musicController.loadMusic.listen((e) {
       if(e){
+        audiosSource.clear();
         musicController.allMusic.forEach((element) {
           audiosSource.add(AudioSource.uri(Uri.parse(element.url)));
         });
+        playList = ConcatenatingAudioSource(children: audiosSource);
         setAudioSource(audiosSource);
+        // player.setAudioSource(playList,
+        //     initialIndex: 0, // default
+        //     preload: true,
+        //     // Playback will be prepared to start from position zero.
+        //     initialPosition: Duration.zero);
       }
     });
 
     player.positionStream.listen((event) {
       currentTimeMusic.value = setTime(event);
       positionMusic.value = event.inMilliseconds.toDouble();
+
+    });
+
+    player.currentIndexStream.listen((event) {
+
     });
 
     player.durationStream.listen((event) {
 
       int? index = player.currentIndex;
+
+      currentMusic.value = musicController.allMusic[index ??0];
 
       currentMusic.value = musicController.allMusic[index ??0];
 
@@ -135,6 +161,7 @@ class MusicPlayerController extends GetxController {
   }
 
   setAudioSource(List<AudioSource> source) async {
+    print('Audio source: ${source.length}');
     await player.setAudioSource(
       ConcatenatingAudioSource(
         // Start loading next item just before reaching it.

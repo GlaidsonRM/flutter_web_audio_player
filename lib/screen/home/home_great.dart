@@ -122,8 +122,8 @@ class HomeGreat extends StatelessWidget {
                       valueIndicatorShape: SliderComponentShape.noOverlay,
                       thumbColor: Colors.green,
                     ), child: Slider(onChanged: (double value) {
-                      playerController.player.setVolume(value);
-                    }, value: playerController.player.volume,)),
+                      playerController.volume.value = value;
+                    }, value: playerController.volume.value,)),
                   ),
                 ],
               ),

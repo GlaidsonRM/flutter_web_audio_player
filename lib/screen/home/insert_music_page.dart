@@ -100,7 +100,7 @@ class InsertMusicPage extends StatelessWidget {
                     height: 20,
                   ),
                   Expanded(
-                      child: StreamBuilder(
+                      child: StreamBuilder<QuerySnapshot>(
                         stream: FirebaseFirestore.instance
                             .collection('all_music')
                             .snapshots(),
@@ -113,9 +113,8 @@ class InsertMusicPage extends StatelessWidget {
 
                           List itens = [];
 
-                          snapshot.data.docs.forEach((element) {
-                            MusicModel model = MusicModel.fromJson(element.data());
-                            itens.add(model);
+                          snapshot.data!.docs.forEach((element) {
+//                            itens.add(MusicModel.fromJson(element.data()));
                           });
 
                           itens.sort((a, b) => a.description.compareTo(b.description));

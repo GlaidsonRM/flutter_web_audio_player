@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_web_audio_player/controller/audio_actions.dart';
 import 'package:flutter_web_audio_player/controller/music_controller.dart';
 import 'package:flutter_web_audio_player/controller/music_player_controller.dart';
+import 'package:flutter_web_audio_player/features/google_drive_music/presentation/pages/google_drive_files_page.dart';
 import 'package:flutter_web_audio_player/model/music_model.dart';
 import 'package:flutter_web_audio_player/screen/home/list_music_widget.dart';
 import 'package:get/get.dart';
@@ -36,6 +37,10 @@ class HomeLittle extends StatelessWidget {
             child: SingleChildScrollView(
               child: Column(
                 children: [
+                  InkWell(
+                      onTap: () => Get.to(GoogleDriveFilesPage()),
+                      child: Icon(Icons.cloud, color: Colors.yellow,)),
+                  SizedBox(height: 8,),
                   Container(
                     height: 150,
                     width: 150,
@@ -46,7 +51,7 @@ class HomeLittle extends StatelessWidget {
                       elevation: 8,
                       child: Center(
                         child: playerController.currentMusic.value.description ==
-                                'Nada tocando'
+                                'Nada tocando' || playerController.currentMusic.value.urlImage == ''
                             ? Icon(
                                 Icons.music_off,
                                 size: 100,
@@ -59,6 +64,7 @@ class HomeLittle extends StatelessWidget {
                   SizedBox(
                     height: 8,
                   ),
+
                   playerController.loadingSong.value
                       ? CircularProgressIndicator(
                           color: Colors.green,
@@ -131,8 +137,8 @@ class HomeLittle extends StatelessWidget {
                             valueIndicatorShape: SliderComponentShape.noOverlay,
                             thumbColor: Colors.green,
                           ), child: Slider(onChanged: (double value) {
-                            playerController.player.setVolume(value);
-                          }, value: playerController.player.volume,)),
+                            playerController.volume.value = value;
+                          }, value: playerController.volume.value,)),
                         ),
                       ],
                     ),
@@ -175,6 +181,10 @@ class HomeLittle extends StatelessWidget {
   }
 
   Future<String> _getImage(String image) async {
+
+    Get.offAllNamed()
+
+
     try {
       final ref = FirebaseStorage.instance
           .ref()

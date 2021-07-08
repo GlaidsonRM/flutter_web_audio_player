@@ -1,8 +1,12 @@
+import 'dart:typed_data';
+
 class MusicModel {
   late String description;
   late String artist;
   late String url;
   late String urlImage;
+  late Uint8List albumArt;
+  late int duration;
   late bool isLoading;
   late bool isPlaying;
 
@@ -19,6 +23,8 @@ class MusicModel {
     artist = json['artist'];
     url = json['url'];
     urlImage = json['urlImage'];
+    json['album_art'] != null ?
+    albumArt = json['album_art'] : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -27,6 +33,7 @@ class MusicModel {
     data['artist'] = this.artist;
     data['url'] = this.url;
     data['urlImage'] = this.urlImage;
+    //data['album_art'] = this.albumArt;
     return data;
   }
 }

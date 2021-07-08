@@ -14,6 +14,9 @@ class ListMusicWidget extends StatelessWidget {
       itemCount: musicController.allMusic.length,
       itemBuilder: (context, index) {
         MusicModel musicModel = musicController.allMusic[index];
+
+
+
         return Column(
           children: [
             ListTile(
@@ -21,7 +24,9 @@ class ListMusicWidget extends StatelessWidget {
               leading: Container(
                   height: 50,
                   width: 50,
-                  child: Image.network(musicModel.urlImage)),
+                  child: musicModel.albumArt == null ?
+                  Text('') :
+                  Image.memory(musicModel.albumArt)),
               title: Text(musicModel.description),
               subtitle: Text(musicModel.artist),
               trailing: Text('03:12'),

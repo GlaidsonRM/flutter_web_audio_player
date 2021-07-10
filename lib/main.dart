@@ -6,10 +6,17 @@ import 'package:flutter_web_audio_player/controller/music_controller.dart';
 import 'package:flutter_web_audio_player/controller/music_player_controller.dart';
 import 'package:flutter_web_audio_player/screen/home/home_screen.dart';
 import 'package:get/get.dart';
-import 'package:just_audio/just_audio.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // void callbackDispatcher() {
+  //   Workmanager().executeTask((taskName, inputData) {
+  //     print("Native called background task: $backgroundTask"); //simpleTask will be emitted here.
+  //     return Future.value(true);
+  //   });
+  // }
+
   await Firebase.initializeApp();
 
   await FirebaseAuth.instance.signInWithEmailAndPassword(
@@ -24,7 +31,6 @@ void main() async {
   musicPlayerController.onInit();
 
   ///flutter_beta run --web-renderer html
-
   runApp(MyApp());
 }
 

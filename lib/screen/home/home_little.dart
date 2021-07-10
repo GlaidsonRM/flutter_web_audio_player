@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_audio_player/controller/audio_actions.dart';
@@ -8,6 +10,7 @@ import 'package:flutter_web_audio_player/model/music_model.dart';
 import 'package:flutter_web_audio_player/screen/home/list_music_widget.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
+
 
 class HomeLittle extends StatelessWidget {
   final MusicController musicController = Get.find();
@@ -51,13 +54,13 @@ class HomeLittle extends StatelessWidget {
                       elevation: 8,
                       child: Center(
                         child: playerController.currentMusic.value.description ==
-                                'Nada tocando' || playerController.currentMusic.value.urlImage == ''
+                                'Nada tocando' || playerController.currentMusic.value.albumArt == ''
                             ? Icon(
                                 Icons.music_off,
                                 size: 100,
                               )
-                            : Image.network(
-                                playerController.currentMusic.value.urlImage),
+                            : Image.memory(
+                                base64Decode(playerController.currentMusic.value.albumArt)),
                       ),
                     ),
                   ),
@@ -178,23 +181,5 @@ class HomeLittle extends StatelessWidget {
             ),
           ),
         ));
-  }
-
-  Future<String> _getImage(String image) async {
-
-    Get.offAllNamed()
-
-
-    try {
-      final ref = FirebaseStorage.instance
-          .ref()
-          .child('album_images')
-          .child('$image.png');
-      var url = await ref.getDownloadURL();
-      return url;
-    } catch (e) {
-      print(e);
-      return '';
-    }
   }
 }

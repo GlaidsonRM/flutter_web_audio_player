@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_web_audio_player/controller/audio_actions.dart';
 import 'package:flutter_web_audio_player/controller/music_controller.dart';
@@ -16,7 +19,6 @@ class ListMusicWidget extends StatelessWidget {
         MusicModel musicModel = musicController.allMusic[index];
 
 
-
         return Column(
           children: [
             ListTile(
@@ -24,9 +26,9 @@ class ListMusicWidget extends StatelessWidget {
               leading: Container(
                   height: 50,
                   width: 50,
-                  child: musicModel.albumArt == null ?
-                  Text('') :
-                  Image.memory(musicModel.albumArt)),
+                  child: musicModel.albumArt == '' ?
+                  Text('No Img') :
+                  Image.memory(base64Decode(musicModel.albumArt))),
               title: Text(musicModel.description),
               subtitle: Text(musicModel.artist),
               trailing: Text('03:12'),

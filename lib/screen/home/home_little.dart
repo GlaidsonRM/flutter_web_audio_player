@@ -7,10 +7,10 @@ import 'package:flutter_web_audio_player/controller/music_controller.dart';
 import 'package:flutter_web_audio_player/controller/music_player_controller.dart';
 import 'package:flutter_web_audio_player/features/google_drive_music/presentation/pages/google_drive_files_page.dart';
 import 'package:flutter_web_audio_player/model/music_model.dart';
+import 'package:flutter_web_audio_player/screen/home/home_little_new.dart';
 import 'package:flutter_web_audio_player/screen/home/list_music_widget.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
-
 
 class HomeLittle extends StatelessWidget {
   final MusicController musicController = Get.find();
@@ -33,6 +33,9 @@ class HomeLittle extends StatelessWidget {
   }
 
   playerAudio() {
+
+    print('play ${playerController.currentMusic.value.albumArt}');
+
     return Obx(() => Container(
           color: Colors.black,
           child: Padding(
@@ -42,8 +45,19 @@ class HomeLittle extends StatelessWidget {
                 children: [
                   InkWell(
                       onTap: () => Get.to(GoogleDriveFilesPage()),
-                      child: Icon(Icons.cloud, color: Colors.yellow,)),
-                  SizedBox(height: 8,),
+                      child: Icon(
+                        Icons.cloud,
+                        color: Colors.yellow,
+                      )),
+                  InkWell(
+                      onTap: () => Get.to(HomeLittleNew(playerController), transition: Transition.downToUp, duration: Duration(milliseconds: 300)),
+                      child: Icon(
+                        Icons.play_arrow,
+                        color: Colors.green,
+                      )),
+                  SizedBox(
+                    height: 8,
+                  ),
                   Container(
                     height: 150,
                     width: 150,
@@ -53,21 +67,24 @@ class HomeLittle extends StatelessWidget {
                       ),
                       elevation: 8,
                       child: Center(
-                        child: playerController.currentMusic.value.description ==
-                                'Nada tocando' || playerController.currentMusic.value.albumArt == ''
+                        child: playerController
+                                        .currentMusic.value.description ==
+                                    'Nada tocando'
+                            ||
+                                playerController.currentMusic.value.albumArt !=
+                                    null
                             ? Icon(
                                 Icons.music_off,
                                 size: 100,
                               )
-                            : Image.memory(
-                                base64Decode(playerController.currentMusic.value.albumArt)),
+                            : Image.memory(base64Decode(
+                                playerController.currentMusic.value.albumArt!)),
                       ),
                     ),
                   ),
                   SizedBox(
                     height: 8,
                   ),
-
                   playerController.loadingSong.value
                       ? CircularProgressIndicator(
                           color: Colors.green,
@@ -75,15 +92,16 @@ class HomeLittle extends StatelessWidget {
                       : Column(
                           children: [
                             Text(
-                              playerController.currentMusic.value.description,
+                              playerController.currentMusic.value.description!,
                               style: TextStyle(
                                   color: Colors.green,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 18),
                             ),
                             Text(
-                              playerController.currentMusic.value.artist,
-                              style: TextStyle(color: Colors.green, fontSize: 15),
+                              playerController.currentMusic.value.artist!,
+                              style:
+                                  TextStyle(color: Colors.green, fontSize: 15),
                             )
                           ],
                         ),
@@ -131,17 +149,26 @@ class HomeLittle extends StatelessWidget {
                     width: 250,
                     child: Row(
                       children: [
-                        Icon(Icons.volume_up_sharp, color: Colors.green,),
+                        Icon(
+                          Icons.volume_up_sharp,
+                          color: Colors.green,
+                        ),
                         Expanded(
-                          child: SliderTheme(data: SliderThemeData(
-                            trackHeight: 0.1,
-                            showValueIndicator: ShowValueIndicator.never,
-                            valueIndicatorColor: Colors.grey,
-                            valueIndicatorShape: SliderComponentShape.noOverlay,
-                            thumbColor: Colors.green,
-                          ), child: Slider(onChanged: (double value) {
-                            playerController.volume.value = value;
-                          }, value: playerController.volume.value,)),
+                          child: SliderTheme(
+                              data: SliderThemeData(
+                                trackHeight: 0.1,
+                                showValueIndicator: ShowValueIndicator.never,
+                                valueIndicatorColor: Colors.grey,
+                                valueIndicatorShape:
+                                    SliderComponentShape.noOverlay,
+                                thumbColor: Colors.green,
+                              ),
+                              child: Slider(
+                                onChanged: (double value) {
+                                  playerController.volume.value = value;
+                                },
+                                value: playerController.volume.value,
+                              )),
                         ),
                       ],
                     ),

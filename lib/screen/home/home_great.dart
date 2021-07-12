@@ -45,7 +45,7 @@ class HomeGreat extends StatelessWidget {
                   child: playerController.currentMusic.value.description == 'Nada tocando' ? Icon(
                     Icons.music_off,
                     size: 100,
-                  ) : Image.network(playerController.currentMusic.value.urlImage),
+                  ) : Image.network(playerController.currentMusic.value.urlImage!),
                 ),
               ),
             ),
@@ -57,14 +57,14 @@ class HomeGreat extends StatelessWidget {
             Column(
               children: [
                 Text(
-                  playerController.currentMusic.value.description,
+                  playerController.currentMusic.value.description!,
                   style: TextStyle(
                       color: Colors.green,
                       fontWeight: FontWeight.bold,
                       fontSize: 18),
                 ),
                 Text(
-                  playerController.currentMusic.value.artist,
+                  playerController.currentMusic.value.artist!,
                   style: TextStyle(color: Colors.green, fontSize: 15),
                 )
               ],

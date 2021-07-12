@@ -1,20 +1,21 @@
 class MusicModel {
-  late String description;
-  late String artist;
-  late String url;
-  late String urlImage;
-  late String albumArt;
-  late int duration;
-  late bool isLoading;
-  late bool isPlaying;
+  late String? description;
+  late String? artist;
+  late String? url;
+  late String? urlImage;
+  late String? albumArt;
+  late int? duration;
+  late bool? isLoading;
+  late bool? isPlaying;
 
   MusicModel(
-      {required this.description,
-      required this.url,
-      required this.artist,
-      required this.urlImage,
-      required this.isLoading,
-      required this.isPlaying});
+      {this.description,
+      this.url,
+      this.artist,
+      this.urlImage,
+        this.albumArt = '',
+      this.isLoading,
+      this.isPlaying});
 
   MusicModel.fromJson(Map<String, dynamic> json) {
     description = json['description'];

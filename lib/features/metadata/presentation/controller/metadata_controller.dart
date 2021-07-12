@@ -19,20 +19,22 @@ class MetaDataController extends GetxController {
         await Future.forEach(musicController.allMusic, (element) async {
           element as MusicModel;
 
-          if(element.albumArt == ''){
-            retriever = await getMetaData(element.url);
-            await Future.delayed(Duration(seconds: 2));
-            String img64 = base64Encode(retriever.albumArt!);
+          if (element.albumArt == null || element.albumArt == '') {
+            String img64 = await getAlbumArt(element.url!);
             await Future.delayed(Duration(seconds: 2));
 
             QuerySnapshot item = await FirebaseFirestore.instance
                 .collection('all_music')
-                .where('url', isEqualTo: element.url).get();
+                .where('url', isEqualTo: element.url)
+                .get();
 
             item.docs.first.id;
 
             element.albumArt = img64;
-            FirebaseFirestore.instance.collection('all_music').doc(item.docs.first.id).set(element.toJson());
+            FirebaseFirestore.instance
+                .collection('all_music')
+                .doc(item.docs.first.id)
+                .set(element.toJson());
             // element.albumArt = retriever.albumArt!;
             print('ImageLoaded: ${element.description}');
             print(img64);
@@ -46,7 +48,7 @@ class MetaDataController extends GetxController {
     super.onInit();
   }
 
-  Future<MetadataRetriever> getMetaData(String url) async {
+  static Future<MetadataRetriever> _getMetaData(String url) async {
     MetadataRetriever retriever = MetadataRetriever();
 
     await retriever.setUri(Uri.parse(url));
@@ -75,6 +77,14 @@ class MetaDataController extends GetxController {
   // Image imageFromBase64String(String base64String) {
   //   return Image.memory(base64Decode(base64String));
   // }
+
+  static Future<String> getAlbumArt(String url) async {
+    MetadataRetriever retriever = MetadataRetriever();
+
+    retriever = await _getMetaData(url);
+
+    return base64Encode(retriever.albumArt!);
+  }
 
   static Uint8List dataFromBase64String(String base64String) {
     return base64Decode(base64String);

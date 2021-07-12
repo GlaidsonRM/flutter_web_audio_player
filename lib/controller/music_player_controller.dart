@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_web_audio_player/controller/music_controller.dart';
 import 'package:flutter_web_audio_player/model/music_model.dart';
 import 'package:get/get.dart';
@@ -10,13 +11,17 @@ class MusicPlayerController extends GetxController {
 
   RxDouble volume = 0.5.obs;
   RxDouble positionMusic = 0.0.obs;
+  RxDouble elapsedMusic = 0.0.obs;
   RxDouble maxPositionMusic = 100.0.obs;
   RxInt positionMusicPlayer = 0.obs;
   RxString currentTimeMusic = '0:00'.obs;
   RxString maxTimeMusic = '0:00'.obs;
+  RxString elapsedTimeMusic = '0:00'.obs;
   RxBool loadingSong = false.obs;
   RxBool playing = false.obs;
   RxBool isPaused = false.obs;
+
+  var background = Colors.black45.obs;
 
   List<AudioSource> audiosSource = [];
 
@@ -130,7 +135,7 @@ class MusicPlayerController extends GetxController {
       player.play();
     } else {
       currentMusic.value = musicController.allMusic[positionMusicPlayer.value];
-      var duration = await player.setUrl(currentMusic.value.url);
+      var duration = await player.setUrl(currentMusic.value.url!);
 
       if (duration != null) {
         int milleseconds = int.parse(duration.inMilliseconds.toString());

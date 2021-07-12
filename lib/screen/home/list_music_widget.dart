@@ -26,11 +26,11 @@ class ListMusicWidget extends StatelessWidget {
               leading: Container(
                   height: 50,
                   width: 50,
-                  child: musicModel.albumArt == '' ?
+                  child: musicModel.albumArt == null ?
                   Text('No Img') :
-                  Image.memory(base64Decode(musicModel.albumArt))),
-              title: Text(musicModel.description),
-              subtitle: Text(musicModel.artist),
+                  Image.memory(base64Decode(musicModel.albumArt!))),
+              title: Text(musicModel.description!),
+              subtitle: Text(musicModel.artist!),
               trailing: Text('03:12'),
             ),
             Divider(

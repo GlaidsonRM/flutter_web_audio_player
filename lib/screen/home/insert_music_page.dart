@@ -126,8 +126,8 @@ class InsertMusicPage extends StatelessWidget {
                               MusicModel model = itens[index];
 
                               return ListTile(
-                                title: Text(model.description),
-                                subtitle: Text(model.url),
+                                title: Text(model.description!),
+                                subtitle: Text(model.url!),
                               );
                             },
                           );

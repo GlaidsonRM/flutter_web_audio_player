@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_web_audio_player/controller/music_controller.dart';
 import 'package:flutter_web_audio_player/controller/music_player_controller.dart';
 import 'package:flutter_web_audio_player/features/google_drive_music/presentation/controller/google_drive_controller.dart';
+import 'package:flutter_web_audio_player/features/metadata/presentation/controller/metadata_controller.dart';
 import 'package:flutter_web_audio_player/model/music_model.dart';
 import 'package:get/get.dart';
 import 'package:googleapis/drive/v3.dart';
@@ -128,17 +131,19 @@ class GoogleDriveFilesPage extends StatelessWidget {
 
   void addMusic(file) async {
     playerController.playList.children
-        .add(AudioSource.uri(Uri.parse(file.webContentLink ?? 'No Link')));
+        .add(AudioSource.uri(Uri.parse(file.webContentLink!)));
 
     // playerController.playList.children.insert(playerController.musicController.allMusic.length,
     //     AudioSource.uri(Uri.parse(file.webContentLink ?? 'No Link')));
 
+    var base64 = await MetaDataController.getAlbumArt(file.webContentLink);
+
     musicController.allMusic.add(
       MusicModel(
           description: file.name!.split('.').first,
-          url: file.webContentLink ?? 'No Link',
+          url: file.webContentLink!,
           artist: file.name!.split('-').first,
-          urlImage: '',
+          albumArt: base64,
           isLoading: false,
           isPlaying: false),
     );
